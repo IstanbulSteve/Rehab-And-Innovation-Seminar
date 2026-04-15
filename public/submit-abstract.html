@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Submit Abstract</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="page-header"><div class="container"><h1>Submit Abstract</h1><p>Maximum 800 words across title, aim, methods, and results &amp; observations. Each section may include up to one diagram and one table.</p></div></div>
+  <div class="container">
+    <div class="panel">
+      <form id="abstractForm" enctype="multipart/form-data">
+        <div class="field-grid">
+          <div><label for="presenterName">Presenter name</label><input id="presenterName" name="presenterName" required></div>
+          <div><label for="email">Email</label><input id="email" name="email" type="email" required></div>
+          <div><label for="organisation">Organisation</label><input id="organisation" name="organisation"></div>
+          <div><label for="roleProfession">Role / Profession</label><input id="roleProfession" name="roleProfession"></div>
+          <div><label for="presentationPreference">Presentation preference</label><select id="presentationPreference" name="presentationPreference" required><option value="">Select</option><option>Oral</option><option>E-poster</option><option>Either</option></select></div>
+          <div><label for="title">Title</label><input id="title" name="title" required></div>
+        </div>
+
+        <div style="margin-top:18px"><label for="aimText">Aim</label><textarea id="aimText" name="aimText" required></textarea></div>
+        <fieldset class="upload-group">
+          <legend>Aim uploads</legend>
+          <div class="field-grid">
+            <div><label for="aimDiagram">Aim diagram</label><input id="aimDiagram" name="aimDiagram" type="file" accept=".png,.jpg,.jpeg,.webp,.gif,.pdf,.docx"></div>
+            <div><label for="aimTable">Aim table</label><input id="aimTable" name="aimTable" type="file" accept=".csv,.xls,.xlsx,.pdf"></div>
+          </div>
+        </fieldset>
+
+        <div><label for="methodsText">Methods</label><textarea id="methodsText" name="methodsText" required></textarea></div>
+        <fieldset class="upload-group">
+          <legend>Methods uploads</legend>
+          <div class="field-grid">
+            <div><label for="methodsDiagram">Methods diagram</label><input id="methodsDiagram" name="methodsDiagram" type="file" accept=".png,.jpg,.jpeg,.webp,.gif,.pdf,.docx"></div>
+            <div><label for="methodsTable">Methods table</label><input id="methodsTable" name="methodsTable" type="file" accept=".csv,.xls,.xlsx,.pdf"></div>
+          </div>
+        </fieldset>
+
+        <div><label for="resultsText">Results &amp; Observations</label><textarea id="resultsText" name="resultsText" required></textarea></div>
+        <fieldset class="upload-group">
+          <legend>Results &amp; observations uploads</legend>
+          <div class="field-grid">
+            <div><label for="resultsDiagram">Results diagram</label><input id="resultsDiagram" name="resultsDiagram" type="file" accept=".png,.jpg,.jpeg,.webp,.gif,.pdf,.docx"></div>
+            <div><label for="resultsTable">Results table</label><input id="resultsTable" name="resultsTable" type="file" accept=".csv,.xls,.xlsx,.pdf"></div>
+          </div>
+        </fieldset>
+
+        <div style="margin: 12px 0 18px;">
+          <label><input type="checkbox" name="declarationConfirmed" required> I confirm the abstract is my submission and that any uploaded material may be reviewed for seminar administration.</label>
+        </div>
+
+        <div class="help">Permitted file types include PNG, JPG, WEBP, PDF, DOCX, CSV, XLS, and XLSX. Default per-file limit: 10 MB.</div>
+        <div style="margin-top:20px"><button class="btn" type="submit">Submit Abstract</button></div>
+      </form>
+      <div id="result" class="result"></div>
+    </div>
+  </div>
+  <script src="/main.js"></script>
+</body>
+</html>

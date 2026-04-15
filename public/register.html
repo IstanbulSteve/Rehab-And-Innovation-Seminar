@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register Interest</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="page-header"><div class="container"><h1>Register Interest</h1><p>Indicate attendee or speaker interest for the seminar.</p></div></div>
+  <div class="container">
+    <div class="panel">
+      <div class="notice">Email confirmations are sent when SMTP is configured. Otherwise confirmations are logged locally for testing.</div>
+      <form id="registerForm">
+        <div class="field-grid">
+          <div><label for="fullName">Full name</label><input id="fullName" name="fullName" required></div>
+          <div><label for="email">Email</label><input id="email" name="email" type="email" required></div>
+          <div><label for="organisation">Organisation</label><input id="organisation" name="organisation"></div>
+          <div><label for="roleProfession">Role / Profession</label><input id="roleProfession" name="roleProfession"></div>
+          <div><label for="attendanceType">Attendance type</label><select id="attendanceType" name="attendanceType" required><option value="">Select</option><option>Attendee</option><option>Speaker</option><option>Lived Experience Presenter</option></select></div>
+        </div>
+        <div style="margin-top:18px"><label for="notes">Notes</label><textarea id="notes" name="notes"></textarea></div>
+        <div style="margin-top:20px"><button class="btn" type="submit">Submit Registration</button></div>
+      </form>
+      <div id="result" class="result"></div>
+    </div>
+  </div>
+  <script src="/main.js"></script>
+</body>
+</html>
