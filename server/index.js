@@ -12,9 +12,22 @@ const MAX_UPLOAD_MB = Number(process.env.MAX_UPLOAD_MB || 10);
 const uploadDir = path.join(__dirname, 'uploads');
 fs.mkdirSync(uploadDir, { recursive: true });
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgres://seminar:seminar_password@localhost:5432/seminar_db'
-});
+const { Pool } = require('pg');
+
+const connectionString = process.env.DATABASE_URL;
+
+const pool = connectionString
+  ? new Pool({
+      connectionString,
+      ssl: { rejectUnauthorized: false }
+    })
+  : new Pool({
+      host: 'localhost',
+      port: 5432,
+      database: 'seminar_db',
+      user: process.env.POSTGRES_USER || 'postgres',
+      password: process.env.POSTGRES_PASSWORD || 'postgres'
+    });
 
 const smtpConfigured = !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
 const transporter = smtpConfigured ? nodemailer.createTransport({
@@ -205,7 +218,7 @@ app.use((err, _req, res, _next) => {
 
 initDb().then(() => {
   app.listen(PORT, () => {
-    console.log(`Seminar site running on http://localhost:${PORT}`);
+    console.log(`Seminar site running on port${PORT}`);
   });
 }).catch((err) => {
   console.error('Failed to initialise database:', err);
