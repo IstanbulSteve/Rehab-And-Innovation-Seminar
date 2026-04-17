@@ -12,8 +12,6 @@ const MAX_UPLOAD_MB = Number(process.env.MAX_UPLOAD_MB || 10);
 const uploadDir = path.join(__dirname, 'uploads');
 fs.mkdirSync(uploadDir, { recursive: true });
 
-const { Pool } = require('pg');
-
 const connectionString = process.env.DATABASE_URL;
 
 const pool = connectionString
