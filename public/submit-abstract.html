@@ -7,198 +7,209 @@
   <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
-  <header class="form-hero">
-    <div class="container form-hero-inner">
-      <a class="text-link" href="/">← Back to Home</a>
-      <span class="eyebrow">Abstract Submission</span>
+  <header class="form-page-hero">
+    <div class="container form-page-hero-inner">
+      <a class="form-back-link" href="/">← Back to Home</a>
+      <span class="eyebrow">Movement Rehabilitation &amp; Innovation Seminar 2026</span>
       <h1>Submit Abstract</h1>
-      <p class="form-hero-copy">
-        Maximum 800 words across title, aim, methods, and results &amp; observations.
-        Each section may include up to one diagram and one table.
+      <p class="form-page-intro">
+        Submit work exploring innovative, task-led, developmental, and practical approaches to
+        movement rehabilitation.
       </p>
     </div>
   </header>
 
   <main class="section soft-surface-alt">
-    <div class="container form-shell">
-      <form id="abstractForm" class="form-stack" enctype="multipart/form-data">
-        <section class="form-card">
-          <div class="form-card-header">
-            <h2>Presenter Details</h2>
-            <p>Provide the lead presenter information and preferred presentation format.</p>
-          </div>
+    <div class="container form-layout">
+      <aside class="form-sidebar">
+        <section class="info-card info-card-dark">
+          <h2>Abstract Guidance</h2>
+          <ul class="info-list">
+            <li>Maximum 800 words across title, aim, methods, and results &amp; observations.</li>
+            <li>State whether you would like oral, e-poster, or either presentation format.</li>
+            <li>Each section may include up to one diagram and one table.</li>
+            <li>Accepted file types include PNG, JPG, WEBP, PDF, DOCX, CSV, XLS, and XLSX.</li>
+            <li>Default per-file upload limit: 10 MB.</li>
+          </ul>
+        </section>
 
-          <div class="field-grid">
-            <div class="form-field">
-              <label for="presenterName">Presenter name</label>
-              <input id="presenterName" name="presenterName" type="text" required />
-            </div>
-
-            <div class="form-field">
-              <label for="email">Email</label>
-              <input id="email" name="email" type="email" required />
-            </div>
-
-            <div class="form-field">
-              <label for="organisation">Organisation</label>
-              <input id="organisation" name="organisation" type="text" />
-            </div>
-
-            <div class="form-field">
-              <label for="roleProfession">Role / Profession</label>
-              <input id="roleProfession" name="roleProfession" type="text" />
-            </div>
-
-            <div class="form-field">
-              <label for="presentationPreference">Presentation preference</label>
-              <select id="presentationPreference" name="presentationPreference" required>
-                <option value="">Select</option>
-                <option>Oral</option>
-                <option>E-poster</option>
-                <option>Either</option>
-              </select>
-            </div>
-
-            <div class="form-field">
-              <label for="title">Title</label>
-              <input id="title" name="title" type="text" required />
-            </div>
+        <section class="info-card">
+          <h3>Submission Structure</h3>
+          <div class="mini-steps">
+            <div class="mini-step"><span>1</span><div><strong>Presenter Details</strong><p>Contact and presentation preference.</p></div></div>
+            <div class="mini-step"><span>2</span><div><strong>Abstract Content</strong><p>Aim, methods, and results &amp; observations.</p></div></div>
+            <div class="mini-step"><span>3</span><div><strong>Supporting Material</strong><p>Optional diagrams and tables for each section.</p></div></div>
+            <div class="mini-step"><span>4</span><div><strong>Confirmation</strong><p>Declaration and final submission.</p></div></div>
           </div>
         </section>
 
-        <section class="form-card">
-          <div class="form-card-header">
-            <h2>Abstract Content</h2>
-            <p>Complete the core abstract sections clearly and concisely.</p>
-          </div>
-
-          <div class="form-section-stack">
-            <div class="form-field">
-              <label for="aimText">Aim</label>
-              <textarea id="aimText" name="aimText" rows="6" required></textarea>
-            </div>
-
-            <div class="form-field">
-              <label for="methodsText">Methods</label>
-              <textarea id="methodsText" name="methodsText" rows="6" required></textarea>
-            </div>
-
-            <div class="form-field">
-              <label for="resultsText">Results &amp; Observations</label>
-              <textarea id="resultsText" name="resultsText" rows="6" required></textarea>
-            </div>
-          </div>
+        <section class="info-card">
+          <h3>Presenter Attendance Rate</h3>
+          <p class="sidebar-price">£30</p>
+          <p class="muted-text">
+            Presenting attendees receive the reduced seminar attendance rate when delivering an oral
+            or e-poster presentation.
+          </p>
         </section>
+      </aside>
 
-        <section class="form-card">
-          <div class="form-card-header">
-            <h2>Supporting Material</h2>
-            <p>Each section may include up to one diagram and one table.</p>
-          </div>
+      <div class="form-main">
+        <form id="abstractForm" class="designed-form" enctype="multipart/form-data">
+          <section class="form-block">
+            <div class="form-block-header">
+              <h2>Presenter Details</h2>
+              <p>Provide the lead presenter details and preferred presentation format.</p>
+            </div>
 
-          <div class="upload-section-stack">
-            <fieldset class="upload-group">
-              <legend>Aim uploads</legend>
-              <div class="field-grid">
-                <div class="form-field">
-                  <label for="aimDiagram">Aim diagram</label>
-                  <input
-                    id="aimDiagram"
-                    name="aimDiagram"
-                    type="file"
-                    accept=".png,.jpg,.jpeg,.webp,.gif,.pdf,.docx"
-                  />
-                </div>
+            <div class="form-grid two-col">
+              <div class="form-control">
+                <label for="presenterName">Presenter name</label>
+                <input id="presenterName" name="presenterName" type="text" required />
+              </div>
 
-                <div class="form-field">
-                  <label for="aimTable">Aim table</label>
-                  <input
-                    id="aimTable"
-                    name="aimTable"
-                    type="file"
-                    accept=".csv,.xls,.xlsx,.pdf"
-                  />
+              <div class="form-control">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" required />
+              </div>
+
+              <div class="form-control">
+                <label for="organisation">Organisation</label>
+                <input id="organisation" name="organisation" type="text" />
+              </div>
+
+              <div class="form-control">
+                <label for="roleProfession">Role / Profession</label>
+                <input id="roleProfession" name="roleProfession" type="text" />
+              </div>
+
+              <div class="form-control">
+                <label for="presentationPreference">Presentation preference</label>
+                <select id="presentationPreference" name="presentationPreference" required>
+                  <option value="">Select</option>
+                  <option>Oral</option>
+                  <option>E-poster</option>
+                  <option>Either</option>
+                </select>
+              </div>
+
+              <div class="form-control">
+                <label for="title">Title</label>
+                <input id="title" name="title" type="text" required />
+              </div>
+            </div>
+          </section>
+
+          <section class="form-block">
+            <div class="form-block-header">
+              <h2>Abstract Content</h2>
+              <p>Enter the core abstract sections clearly and concisely.</p>
+            </div>
+
+            <div class="form-stack-large">
+              <div class="form-control">
+                <label for="aimText">Aim</label>
+                <textarea id="aimText" name="aimText" rows="6" required></textarea>
+              </div>
+
+              <div class="form-control">
+                <label for="methodsText">Methods</label>
+                <textarea id="methodsText" name="methodsText" rows="6" required></textarea>
+              </div>
+
+              <div class="form-control">
+                <label for="resultsText">Results &amp; Observations</label>
+                <textarea id="resultsText" name="resultsText" rows="6" required></textarea>
+              </div>
+            </div>
+          </section>
+
+          <section class="form-block">
+            <div class="form-block-header">
+              <h2>Supporting Material</h2>
+              <p>Optional uploads for each abstract section.</p>
+            </div>
+
+            <div class="upload-groups">
+              <div class="upload-group-panel">
+                <h3>Aim Uploads</h3>
+                <div class="form-grid two-col">
+                  <div class="upload-tile">
+                    <label for="aimDiagram">Aim diagram</label>
+                    <p>PNG, JPG, WEBP, PDF, DOCX</p>
+                    <input id="aimDiagram" name="aimDiagram" type="file" accept=".png,.jpg,.jpeg,.webp,.gif,.pdf,.docx" />
+                  </div>
+
+                  <div class="upload-tile">
+                    <label for="aimTable">Aim table</label>
+                    <p>CSV, XLS, XLSX, PDF</p>
+                    <input id="aimTable" name="aimTable" type="file" accept=".csv,.xls,.xlsx,.pdf" />
+                  </div>
                 </div>
               </div>
-            </fieldset>
 
-            <fieldset class="upload-group">
-              <legend>Methods uploads</legend>
-              <div class="field-grid">
-                <div class="form-field">
-                  <label for="methodsDiagram">Methods diagram</label>
-                  <input
-                    id="methodsDiagram"
-                    name="methodsDiagram"
-                    type="file"
-                    accept=".png,.jpg,.jpeg,.webp,.gif,.pdf,.docx"
-                  />
-                </div>
+              <div class="upload-group-panel">
+                <h3>Methods Uploads</h3>
+                <div class="form-grid two-col">
+                  <div class="upload-tile">
+                    <label for="methodsDiagram">Methods diagram</label>
+                    <p>PNG, JPG, WEBP, PDF, DOCX</p>
+                    <input id="methodsDiagram" name="methodsDiagram" type="file" accept=".png,.jpg,.jpeg,.webp,.gif,.pdf,.docx" />
+                  </div>
 
-                <div class="form-field">
-                  <label for="methodsTable">Methods table</label>
-                  <input
-                    id="methodsTable"
-                    name="methodsTable"
-                    type="file"
-                    accept=".csv,.xls,.xlsx,.pdf"
-                  />
+                  <div class="upload-tile">
+                    <label for="methodsTable">Methods table</label>
+                    <p>CSV, XLS, XLSX, PDF</p>
+                    <input id="methodsTable" name="methodsTable" type="file" accept=".csv,.xls,.xlsx,.pdf" />
+                  </div>
                 </div>
               </div>
-            </fieldset>
 
-            <fieldset class="upload-group">
-              <legend>Results &amp; observations uploads</legend>
-              <div class="field-grid">
-                <div class="form-field">
-                  <label for="resultsDiagram">Results diagram</label>
-                  <input
-                    id="resultsDiagram"
-                    name="resultsDiagram"
-                    type="file"
-                    accept=".png,.jpg,.jpeg,.webp,.gif,.pdf,.docx"
-                  />
-                </div>
+              <div class="upload-group-panel">
+                <h3>Results &amp; Observations Uploads</h3>
+                <div class="form-grid two-col">
+                  <div class="upload-tile">
+                    <label for="resultsDiagram">Results diagram</label>
+                    <p>PNG, JPG, WEBP, PDF, DOCX</p>
+                    <input id="resultsDiagram" name="resultsDiagram" type="file" accept=".png,.jpg,.jpeg,.webp,.gif,.pdf,.docx" />
+                  </div>
 
-                <div class="form-field">
-                  <label for="resultsTable">Results table</label>
-                  <input
-                    id="resultsTable"
-                    name="resultsTable"
-                    type="file"
-                    accept=".csv,.xls,.xlsx,.pdf"
-                  />
+                  <div class="upload-tile">
+                    <label for="resultsTable">Results table</label>
+                    <p>CSV, XLS, XLSX, PDF</p>
+                    <input id="resultsTable" name="resultsTable" type="file" accept=".csv,.xls,.xlsx,.pdf" />
+                  </div>
                 </div>
               </div>
-            </fieldset>
-          </div>
-        </section>
+            </div>
+          </section>
 
-        <section class="form-card form-card-compact">
-          <div class="form-card-header">
-            <h2>Confirmation</h2>
-          </div>
+          <section class="form-block">
+            <div class="form-block-header">
+              <h2>Confirmation</h2>
+              <p>Confirm the submission before sending.</p>
+            </div>
 
-          <label class="checkbox-row">
-            <input type="checkbox" name="declarationConfirmed" required />
-            <span>
-              I confirm the abstract is my submission and that any uploaded material may be
-              reviewed for seminar administration.
-            </span>
-          </label>
+            <label class="checkbox-panel">
+              <input type="checkbox" name="declarationConfirmed" required />
+              <span>
+                I confirm the abstract is my submission and that any uploaded material may be
+                reviewed for seminar administration.
+              </span>
+            </label>
 
-          <div class="help">
-            Permitted file types include PNG, JPG, WEBP, PDF, DOCX, CSV, XLS, and XLSX.
-            Default per-file limit: 10 MB.
-          </div>
+            <div class="form-help-panel">
+              Permitted file types include PNG, JPG, WEBP, PDF, DOCX, CSV, XLS, and XLSX.
+              Default per-file limit: 10 MB.
+            </div>
 
-          <div class="form-actions">
-            <button class="btn" type="submit">Submit Abstract</button>
-          </div>
+            <div class="form-submit-row">
+              <button class="btn" type="submit">Submit Abstract</button>
+            </div>
 
-          <div id="result" class="result"></div>
-        </section>
-      </form>
+            <div id="result" class="result"></div>
+          </section>
+        </form>
+      </div>
     </div>
   </main>
 
