@@ -883,4 +883,7 @@ strong {
     padding: 3rem 0 2.3rem;
   }
 }
+body {
+  background: red !important;
+}
 }
