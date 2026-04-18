@@ -400,69 +400,7 @@ strong {
   color: #6b7280;
 }
 
-/* ===== Responsive ===== */
-@media (max-width: 900px) {
-  .section {
-    padding: 4rem 0;
-  }
-
-  .pricing-grid,
-  .programme-days,
-  .grid-2 {
-    grid-template-columns: 1fr;
-  }
-
-  .hero {
-    min-height: auto;
-  }
-
-  .site-title {
-    max-width: none;
-  }
-}
-
-@media (max-width: 640px) {
-  .container {
-    width: calc(100% - 1.25rem);
-  }
-
-  .section {
-    padding: 3.25rem 0;
-  }
-
-  .hero-copy {
-    padding: 3.5rem 0;
-  }
-
-  .site-title {
-    font-size: clamp(2.2rem, 10vw, 3rem);
-  }
-
-  .lead {
-    font-size: 1.05rem;
-    line-height: 1.7;
-  }
-
-  .programme-day,
-  .price-card,
-  .cardless > div {
-    border-radius: 20px;
-  }
-
-  .programme-table th,
-  .programme-table td {
-    padding: 0.85rem 0.9rem;
-  }
-
-  .programme-table td:first-child {
-    width: 40%;
-  }
-
-  .footer-inner {
-    flex-direction: column;
-  }
-
-  /* ===== Branded Form Pages ===== */
+/* ===== Branded Form Pages ===== */
 .form-page-hero {
   background: linear-gradient(135deg, #14213d 0%, #1e3557 100%);
   color: #ffffff;
@@ -851,6 +789,7 @@ strong {
   font-weight: 500;
 }
 
+/* ===== Responsive ===== */
 @media (max-width: 1080px) {
   .form-layout {
     grid-template-columns: 1fr;
@@ -858,6 +797,26 @@ strong {
 
   .form-sidebar {
     position: static;
+  }
+}
+
+@media (max-width: 900px) {
+  .section {
+    padding: 4rem 0;
+  }
+
+  .pricing-grid,
+  .programme-days,
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    min-height: auto;
+  }
+
+  .site-title {
+    max-width: none;
   }
 }
 
@@ -883,7 +842,45 @@ strong {
     padding: 3rem 0 2.3rem;
   }
 }
-body {
-  background: red !important;
-}
+
+@media (max-width: 640px) {
+  .container {
+    width: calc(100% - 1.25rem);
+  }
+
+  .section {
+    padding: 3.25rem 0;
+  }
+
+  .hero-copy {
+    padding: 3.5rem 0;
+  }
+
+  .site-title {
+    font-size: clamp(2.2rem, 10vw, 3rem);
+  }
+
+  .lead {
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+
+  .programme-day,
+  .price-card,
+  .cardless > div {
+    border-radius: 20px;
+  }
+
+  .programme-table th,
+  .programme-table td {
+    padding: 0.85rem 0.9rem;
+  }
+
+  .programme-table td:first-child {
+    width: 40%;
+  }
+
+  .footer-inner {
+    flex-direction: column;
+  }
 }
