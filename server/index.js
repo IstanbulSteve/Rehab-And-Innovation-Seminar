@@ -32,7 +32,10 @@ const transporter = smtpConfigured ? nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: Number(process.env.SMTP_PORT || 587),
   secure: String(process.env.SMTP_SECURE).toLowerCase() === 'true',
-  auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS }
+  auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+  connectionTimeout: 10000,
+  greetingTimeout: 10000,
+  socketTimeout: 10000
 }) : null;
 
 async function initDb() {
@@ -117,12 +120,21 @@ app.post('/api/register', async (req, res) => {
       [fullName, email, organisation || null, roleProfession || null, attendanceType, notes || null]
     );
 
-    await sendConfirmationEmail({
-      to: email,
-      subject: 'Registration received – Movement Rehabilitation & Innovation Seminar 2026',
-      text: `Thank you for registering your interest, ${fullName}. We have recorded your submission for the seminar in Bristol on 1–2 August 2026.`,
-      html: `<p>Thank you for registering your interest, <strong>${fullName}</strong>.</p><p>We have recorded your submission for the Movement Rehabilitation & Innovation Seminar 2026 in Bristol on 1–2 August 2026.</p>`
-    });
+try {
+  console.log('About to send registration email');
+
+  await sendConfirmationEmail({
+    to: email,
+    subject: 'Registration received – Movement Rehabilitation & Innovation Seminar 2026',
+    text: `Thank you for registering your interest, ${fullName}. We have recorded your submission for the seminar in Bristol on 1–2 August 2026.`,
+    html: `<p>Thank you for registering your interest, <strong>${fullName}</strong>.</p><p>We have recorded your submission for the Movement Rehabilitation & Innovation Seminar 2026 in Bristol on 1–2 August 2026.</p>`
+  });
+
+  console.log('Registration email send completed');
+
+} catch (emailErr) {
+  console.error('Registration email failed:', emailErr);
+}
 
     res.json({ ok: true, registration: result.rows[0] });
   } catch (err) {
@@ -191,12 +203,21 @@ app.post('/api/submit-abstract', abstractUploadFields, async (req, res) => {
 
     await client.query('COMMIT');
 
-    await sendConfirmationEmail({
-      to: email,
-      subject: 'Abstract submission received – Movement Rehabilitation & Innovation Seminar 2026',
-      text: `Thank you, ${presenterName}. Your abstract titled "${title}" has been received. Word count: ${totalWordCount}.`,
-      html: `<p>Thank you, <strong>${presenterName}</strong>.</p><p>Your abstract titled <strong>${title}</strong> has been received.</p><p>Total word count: <strong>${totalWordCount}</strong>.</p>`
-    });
+try {
+  console.log('About to send abstract email');
+
+  await sendConfirmationEmail({
+    to: email,
+    subject: 'Abstract submission received – Movement Rehabilitation & Innovation Seminar 2026',
+    text: `Thank you, ${presenterName}. Your abstract titled "${title}" has been received. Word count: ${totalWordCount}.`,
+    html: `<p>Thank you, <strong>${presenterName}</strong>.</p><p>Your abstract titled <strong>${title}</strong> has been received.</p><p>Total word count: <strong>${totalWordCount}</strong>.</p>`
+  });
+
+  console.log('Abstract email send completed');
+
+} catch (emailErr) {
+  console.error('Abstract email failed:', emailErr);
+}
 
     res.json({ ok: true, submission: { ...inserted.rows[0], totalWordCount } });
   } catch (err) {
