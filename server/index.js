@@ -216,7 +216,7 @@ app.use((err, _req, res, _next) => {
 
 initDb().then(() => {
   app.listen(PORT, () => {
-    console.log(`Seminar site running on port${PORT}`);
+    console.log(`Seminar site running on port ${PORT}`);
   });
 }).catch((err) => {
   console.error('Failed to initialise database:', err);
