@@ -1,18 +1,20 @@
 console.log('main.js loaded');
 
+function showResult(form, type, message) {
+  const result = form.querySelector('.result') || document.getElementById('result');
+  if (!result) {
+    alert(message);
+    return;
+  }
+  result.className = `result ${type}`;
+  result.textContent = message;
+  console.log('result shown:', type, message);
+}
+
 async function postForm(form, url) {
   console.log('postForm entered for', url);
 
-  const result = form.querySelector('.result') || document.getElementById('result');
-
   try {
-    if (!result) {
-      throw new Error('Result container not found.');
-    }
-
-    result.className = 'result';
-    result.textContent = '';
-
     const isMultipart = form.enctype === 'multipart/form-data';
     const body = isMultipart
       ? new FormData(form)
@@ -26,33 +28,42 @@ async function postForm(form, url) {
 
     console.log('response status', response.status);
 
-    const data = await response.json();
-    console.log('response data', data);
+    const text = await response.text();
+    console.log('raw response text', text);
+
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (parseErr) {
+      throw new Error(`Response was not valid JSON: ${text.slice(0, 200)}`);
+    }
+
+    console.log('parsed response data', data);
 
     if (!response.ok || !data.ok) {
       throw new Error(data.error || 'Submission failed.');
     }
 
-    result.className = 'result success';
-
     if (data.submission) {
-      result.textContent = `Abstract received. Submission #${data.submission.id}. Word count: ${data.submission.totalWordCount}.`;
+      showResult(
+        form,
+        'success',
+        `Abstract received. Submission #${data.submission.id}. Word count: ${data.submission.totalWordCount}.`
+      );
     } else if (data.registration) {
-      result.textContent = `Registration received. Reference #${data.registration.id}.`;
+      showResult(
+        form,
+        'success',
+        `Registration received. Reference #${data.registration.id}.`
+      );
     } else {
-      result.textContent = 'Submission received.';
+      showResult(form, 'success', 'Submission received.');
     }
 
     form.reset();
   } catch (err) {
     console.error('postForm error', err);
-
-    if (result) {
-      result.className = 'result error';
-      result.textContent = err.message || 'Submission failed.';
-    } else {
-      alert(err.message || 'Submission failed.');
-    }
+    showResult(form, 'error', err.message || 'Submission failed.');
   }
 }
 
@@ -65,6 +76,13 @@ if (registerForm) {
     e.preventDefault();
     postForm(registerForm, '/api/register');
   });
+
+  const registerButton = registerForm.querySelector('button[type="submit"]');
+  if (registerButton) {
+    registerButton.addEventListener('click', () => {
+      console.log('register submit button clicked');
+    });
+  }
 }
 
 const abstractForm = document.getElementById('abstractForm');
@@ -76,4 +94,11 @@ if (abstractForm) {
     e.preventDefault();
     postForm(abstractForm, '/api/submit-abstract');
   });
+
+  const abstractButton = abstractForm.querySelector('button[type="submit"]');
+  if (abstractButton) {
+    abstractButton.addEventListener('click', () => {
+      console.log('abstract submit button clicked');
+    });
+  }
 }
