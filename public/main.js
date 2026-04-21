@@ -1,4 +1,8 @@
+console.log('main.js loaded');
+
 async function postForm(form, url) {
+  console.log('postForm entered for', url);
+
   const result = form.querySelector('.result') || document.getElementById('result');
 
   try {
@@ -20,7 +24,10 @@ async function postForm(form, url) {
       body
     });
 
+    console.log('response status', response.status);
+
     const data = await response.json();
+    console.log('response data', data);
 
     if (!response.ok || !data.ok) {
       throw new Error(data.error || 'Submission failed.');
@@ -38,27 +45,34 @@ async function postForm(form, url) {
 
     form.reset();
   } catch (err) {
+    console.error('postForm error', err);
+
     if (result) {
       result.className = 'result error';
       result.textContent = err.message || 'Submission failed.';
     } else {
-      console.error(err);
       alert(err.message || 'Submission failed.');
     }
   }
 }
 
 const registerForm = document.getElementById('registerForm');
+console.log('registerForm found:', !!registerForm);
+
 if (registerForm) {
   registerForm.addEventListener('submit', (e) => {
+    console.log('register submit fired');
     e.preventDefault();
     postForm(registerForm, '/api/register');
   });
 }
 
 const abstractForm = document.getElementById('abstractForm');
+console.log('abstractForm found:', !!abstractForm);
+
 if (abstractForm) {
   abstractForm.addEventListener('submit', (e) => {
+    console.log('abstract submit fired');
     e.preventDefault();
     postForm(abstractForm, '/api/submit-abstract');
   });
