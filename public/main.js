@@ -2,23 +2,46 @@ console.log('main.js loaded');
 
 function showResult(form, type, message) {
   const result = form.querySelector('.result') || document.getElementById('result');
+
   if (!result) {
     alert(message);
     return;
   }
+
   result.className = `result ${type}`;
   result.textContent = message;
   console.log('result shown:', type, message);
+}
+
+function buildRequestBody(form) {
+  const formData = new FormData(form);
+
+  // Explicitly preserve the presentation mode field for abstract submissions
+  if (form.id === 'abstractForm') {
+    const presentationMode = formData.get('presentation_mode');
+
+    if (!presentationMode) {
+      throw new Error('Please select whether you are presenting remotely or in person.');
+    }
+
+    console.log('presentation_mode:', presentationMode);
+  }
+
+  const isMultipart = form.enctype === 'multipart/form-data';
+
+  return {
+    isMultipart,
+    body: isMultipart
+      ? formData
+      : JSON.stringify(Object.fromEntries(formData.entries()))
+  };
 }
 
 async function postForm(form, url) {
   console.log('postForm entered for', url);
 
   try {
-    const isMultipart = form.enctype === 'multipart/form-data';
-    const body = isMultipart
-      ? new FormData(form)
-      : JSON.stringify(Object.fromEntries(new FormData(form).entries()));
+    const { isMultipart, body } = buildRequestBody(form);
 
     const response = await fetch(url, {
       method: 'POST',
@@ -32,6 +55,7 @@ async function postForm(form, url) {
     console.log('raw response text', text);
 
     let data;
+
     try {
       data = JSON.parse(text);
     } catch (parseErr) {
@@ -78,6 +102,7 @@ if (registerForm) {
   });
 
   const registerButton = registerForm.querySelector('button[type="submit"]');
+
   if (registerButton) {
     registerButton.addEventListener('click', () => {
       console.log('register submit button clicked');
@@ -96,6 +121,7 @@ if (abstractForm) {
   });
 
   const abstractButton = abstractForm.querySelector('button[type="submit"]');
+
   if (abstractButton) {
     abstractButton.addEventListener('click', () => {
       console.log('abstract submit button clicked');

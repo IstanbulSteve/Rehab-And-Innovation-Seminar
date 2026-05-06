@@ -91,7 +91,18 @@
                   <option>Either</option>
                 </select>
               </div>
-
+              <div class="form-group">
+                <label for="presentation_mode">Presentation mode</label>
+                <select id="presentation_mode" name="presentation_mode" required>
+                  <option value="">Please select</option>
+                  <option value="in_person">In-person</option>
+                  <option value="remote">Remote / online</option>
+                  <option value="either">Either / no preference</option>
+                </select>
+              </div>
+              <p class="form-hint">
+                Remote presenters are welcome and will present live online to the event audience.
+              </p>
               <div class="form-control">
                 <label for="title">Title</label>
                 <input id="title" name="title" type="text" required />

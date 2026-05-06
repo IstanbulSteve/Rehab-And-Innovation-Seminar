@@ -28,15 +28,18 @@ const pool = connectionString
     });
 
 const smtpConfigured = !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
-const transporter = smtpConfigured ? nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT || 587),
-  secure: String(process.env.SMTP_SECURE).toLowerCase() === 'true',
-  auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
-  connectionTimeout: 10000,
-  greetingTimeout: 10000,
-  socketTimeout: 10000
-}) : null;
+
+const transporter = smtpConfigured
+  ? nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: Number(process.env.SMTP_PORT || 587),
+      secure: String(process.env.SMTP_SECURE).toLowerCase() === 'true',
+      auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 10000
+    })
+  : null;
 
 async function initDb() {
   const schema = fs.readFileSync(path.join(__dirname, 'sql', 'schema.sql'), 'utf8');
@@ -52,7 +55,10 @@ const storage = multer.diskStorage({
 });
 
 const allowedMimeTypes = new Set([
-  'image/png', 'image/jpeg', 'image/webp', 'image/gif',
+  'image/png',
+  'image/jpeg',
+  'image/webp',
+  'image/gif',
   'application/pdf',
   'text/csv',
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -88,6 +94,7 @@ async function sendConfirmationEmail({ to, subject, html, text }) {
     console.log('Email not sent. SMTP not configured. Preview:', { to, subject, text });
     return { delivered: false, reason: 'smtp_not_configured' };
   }
+
   await transporter.sendMail({
     from: process.env.SMTP_FROM || 'noreply@example.com',
     to,
@@ -95,6 +102,7 @@ async function sendConfirmationEmail({ to, subject, html, text }) {
     html,
     text
   });
+
   return { delivered: true };
 }
 
@@ -110,31 +118,36 @@ app.get('/api/health', async (_req, res) => {
 app.post('/api/register', async (req, res) => {
   try {
     const { fullName, email, organisation, roleProfession, attendanceType, notes } = req.body;
+
     if (!fullName || !email || !attendanceType) {
-      return res.status(400).json({ ok: false, error: 'fullName, email and attendanceType are required.' });
+      return res.status(400).json({
+        ok: false,
+        error: 'fullName, email and attendanceType are required.'
+      });
     }
 
     const result = await pool.query(
-      `INSERT INTO registrations (full_name, email, organisation, role_profession, attendance_type, notes)
-       VALUES ($1,$2,$3,$4,$5,$6) RETURNING id, created_at`,
+      `INSERT INTO registrations
+       (full_name, email, organisation, role_profession, attendance_type, notes)
+       VALUES ($1,$2,$3,$4,$5,$6)
+       RETURNING id, created_at`,
       [fullName, email, organisation || null, roleProfession || null, attendanceType, notes || null]
     );
 
-try {
-  console.log('About to send registration email');
+    try {
+      console.log('About to send registration email');
 
-  await sendConfirmationEmail({
-    to: email,
-    subject: 'Registration received – Movement Rehabilitation & Innovation Seminar 2026',
-    text: `Thank you for registering your interest, ${fullName}. We have recorded your submission for the seminar in Bristol on 1–2 August 2026.`,
-    html: `<p>Thank you for registering your interest, <strong>${fullName}</strong>.</p><p>We have recorded your submission for the Movement Rehabilitation & Innovation Seminar 2026 in Bristol on 1–2 August 2026.</p>`
-  });
+      await sendConfirmationEmail({
+        to: email,
+        subject: 'Registration received – Movement Rehabilitation & Innovation Seminar 2026',
+        text: `Thank you for registering your interest, ${fullName}. We have recorded your submission for the seminar in Bristol on 1–2 August 2026.`,
+        html: `<p>Thank you for registering your interest, <strong>${fullName}</strong>.</p><p>We have recorded your submission for the Movement Rehabilitation & Innovation Seminar 2026 in Bristol on 1–2 August 2026.</p>`
+      });
 
-  console.log('Registration email send completed');
-
-} catch (emailErr) {
-  console.error('Registration email failed:', emailErr);
-}
+      console.log('Registration email send completed');
+    } catch (emailErr) {
+      console.error('Registration email failed:', emailErr);
+    }
 
     res.json({ ok: true, registration: result.rows[0] });
   } catch (err) {
@@ -153,33 +166,75 @@ const abstractUploadFields = upload.fields([
 
 app.post('/api/submit-abstract', abstractUploadFields, async (req, res) => {
   const client = await pool.connect();
+
   try {
     const {
-      presenterName, email, organisation, roleProfession,
-      presentationPreference, title, aimText, methodsText, resultsText,
-      declarationConfirmed
+      presenterName,
+      email,
+      organisation,
+      roleProfession,
+      presentationPreference,
+      title,
+      aimText,
+      methodsText,
+      resultsText,
+      declarationConfirmed,
+      presentation_mode
     } = req.body;
 
-    if (!presenterName || !email || !presentationPreference || !title || !aimText || !methodsText || !resultsText) {
-      return res.status(400).json({ ok: false, error: 'All required abstract fields must be completed.' });
+    const presentationMode = presentation_mode;
+
+    const allowedPresentationModes = ['in_person', 'remote', 'either'];
+
+    if (!allowedPresentationModes.includes(presentationMode)) {
+      return res.status(400).json({
+        ok: false,
+        error: 'Please select whether you are presenting remotely or in person.'
+      });
+    }
+
+    if (!presenterName || !email || !presentationPreference || !title) {
+      return res.status(400).json({
+        ok: false,
+        error: 'Presenter name, email, presentation preference and title are required.'
+      });
     }
 
     const totalWordCount = countWords(title, aimText, methodsText, resultsText);
+
     if (totalWordCount > 800) {
-      return res.status(400).json({ ok: false, error: `Abstract exceeds 800 words (${totalWordCount}).` });
+      return res.status(400).json({
+        ok: false,
+        error: `Abstract exceeds 800 words (${totalWordCount}).`
+      });
     }
 
     await client.query('BEGIN');
+
     const inserted = await client.query(
       `INSERT INTO abstract_submissions
-      (presenter_name, email, organisation, role_profession, presentation_preference, title, aim_text, methods_text, results_text, total_word_count, declaration_confirmed)
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
-      RETURNING id, created_at`,
-      [presenterName, email, organisation || null, roleProfession || null, presentationPreference, title, aimText, methodsText, resultsText, totalWordCount, declarationConfirmed === 'true' || declarationConfirmed === 'on']
+       (presenter_name, email, organisation, role_profession, presentation_preference, title, aim_text, methods_text, results_text, total_word_count, declaration_confirmed, presentation_mode)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
+       RETURNING id, created_at`,
+      [
+        presenterName,
+        email,
+        organisation || null,
+        roleProfession || null,
+        presentationPreference,
+        title,
+        aimText || null,
+        methodsText || null,
+        resultsText || null,
+        totalWordCount,
+        declarationConfirmed === 'true' || declarationConfirmed === 'on',
+        presentationMode
+      ]
     );
 
     const submissionId = inserted.rows[0].id;
     const files = req.files || {};
+
     const fileMap = {
       aimDiagram: ['aim', 'diagram'],
       aimTable: ['aim', 'table'],
@@ -192,6 +247,7 @@ app.post('/api/submit-abstract', abstractUploadFields, async (req, res) => {
     for (const [fieldName, meta] of Object.entries(fileMap)) {
       if (files[fieldName] && files[fieldName][0]) {
         const file = files[fieldName][0];
+
         await client.query(
           `INSERT INTO abstract_uploads
            (submission_id, section_name, upload_kind, original_filename, stored_filename, mime_type, file_size_bytes)
@@ -203,25 +259,39 @@ app.post('/api/submit-abstract', abstractUploadFields, async (req, res) => {
 
     await client.query('COMMIT');
 
-try {
-  console.log('About to send abstract email');
+    const presentationModeLabels = {
+      in_person: 'In-person',
+      remote: 'Remote / online',
+      either: 'Either / no preference'
+    };
 
-  await sendConfirmationEmail({
-    to: email,
-    subject: 'Abstract submission received – Movement Rehabilitation & Innovation Seminar 2026',
-    text: `Thank you, ${presenterName}. Your abstract titled "${title}" has been received. Word count: ${totalWordCount}.`,
-    html: `<p>Thank you, <strong>${presenterName}</strong>.</p><p>Your abstract titled <strong>${title}</strong> has been received.</p><p>Total word count: <strong>${totalWordCount}</strong>.</p>`
-  });
+    try {
+      console.log('About to send abstract email');
 
-  console.log('Abstract email send completed');
+      await sendConfirmationEmail({
+        to: email,
+        subject: 'Abstract submission received – Movement Rehabilitation & Innovation Seminar 2026',
+        text: `Thank you, ${presenterName}. Your abstract titled "${title}" has been received. Presentation mode: ${presentationModeLabels[presentationMode]}. Word count: ${totalWordCount}.`,
+        html: `<p>Thank you, <strong>${presenterName}</strong>.</p><p>Your abstract titled <strong>${title}</strong> has been received.</p><p>Presentation mode: <strong>${presentationModeLabels[presentationMode]}</strong>.</p><p>Total word count: <strong>${totalWordCount}</strong>.</p>`
+      });
 
-} catch (emailErr) {
-  console.error('Abstract email failed:', emailErr);
-}
+      console.log('Abstract email send completed');
+    } catch (emailErr) {
+      console.error('Abstract email failed:', emailErr);
+    }
 
-    res.json({ ok: true, submission: { ...inserted.rows[0], totalWordCount } });
+    res.json({
+      ok: true,
+      submission: {
+        ...inserted.rows[0],
+        totalWordCount
+      }
+    });
   } catch (err) {
-    try { await client.query('ROLLBACK'); } catch {}
+    try {
+      await client.query('ROLLBACK');
+    } catch {}
+
     res.status(500).json({ ok: false, error: err.message });
   } finally {
     client.release();
@@ -232,14 +302,17 @@ app.use((err, _req, res, _next) => {
   if (err instanceof multer.MulterError || err) {
     return res.status(400).json({ ok: false, error: err.message });
   }
+
   res.status(500).json({ ok: false, error: 'Unexpected server error.' });
 });
 
-initDb().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Seminar site running on port ${PORT}`);
+initDb()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Seminar site running on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error('Failed to initialise database:', err);
+    process.exit(1);
   });
-}).catch((err) => {
-  console.error('Failed to initialise database:', err);
-  process.exit(1);
-});
