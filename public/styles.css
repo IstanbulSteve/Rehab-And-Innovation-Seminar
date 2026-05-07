@@ -936,16 +936,17 @@ select.form-control {
   line-height: 1.45;
   color: #5f6f84;
 }
+
 .sidebar-pricing-item span {
+  display: block;
   white-space: normal;
-  overflow: visible;
-  text-overflow: unset;
-  line-height: 1.35;
 }
 
-.sidebar-pricing-item small {
+.sidebar-pricing-item span small {
   display: block;
-  margin-top: 0.15rem;
-  font-size: 0.82rem;
-  color: #5f6f84;
-}}
+  margin-top: 0.25rem;
+  font-size: 0.78em;
+  line-height: 1.25;
+  opacity: 0.85;
+}
+}
