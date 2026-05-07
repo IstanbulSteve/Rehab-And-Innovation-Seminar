@@ -938,15 +938,14 @@ select.form-control {
 }
 
 .sidebar-pricing-item span {
-  display: block;
-  white-space: normal;
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar-pricing-item span small {
-  display: block;
   margin-top: 0.25rem;
-  font-size: 0.78em;
-  line-height: 1.25;
+  font-size: 0.8em;
+  line-height: 1.3;
   opacity: 0.85;
 }
 }
