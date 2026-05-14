@@ -962,4 +962,14 @@ select.form-control {
   line-height: 1.3;
   opacity: 0.75;
 }
+
+.price-card h3 {
+    line-height: 1.1;
+}
+
+.price-card h3 small {
+    display: block;
+    margin-top: 0;
+    line-height: 1;
+}
 }
